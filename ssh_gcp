@@ -1,0 +1,14 @@
+#!/bin/bash
+
+SSH_PRIVATE_KEY_PATH=
+REMOTE_SSH_USER=
+IFS=" " read -a server_pattern_arr <<< $@
+grep_cmd=""
+
+for server_pattern in ${server_pattern_arr[@]}
+do
+	grep_cmd="${grep_cmd} grep -i -- ${server_pattern} |"
+done
+filter_cmd="${grep_cmd} cut -d, -f2 | head -1"
+eval "$(echo "server_ip=\$(gcloud compute instances list --format='csv[no-heading](NAME,INTERNAL_IP)' 2>/dev/null | ${filter_cmd})")"
+ssh -o StrictHostKeyChecking=no -i ${SSH_PRIVATE_KEY_PATH:?error - variable SSH_PRIVATE_KEY_PATH is not set} -l ${REMOTE_SSH_USER:?error - variable REMOTE_SSH_USER is not set} ${server_ip}
