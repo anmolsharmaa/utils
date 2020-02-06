@@ -31,7 +31,7 @@ function _do_start () {
                         ${print_only:=false} || timeout 2m gcloud compute instances start $(echo ${1} | cut -d, -f1) --zone $(echo ${1} | cut -d, -f2)
 			${print_only:=false} && echo "gcloud compute instances start $(echo ${1} | cut -d, -f1) --zone $(echo ${1} | cut -d, -f2)"
                 else
-                        echo "skipping auto start for $(echo ${1} | cut -d, -f1) because valueof(auto_shart) = \"${auto_start}\"."
+                        echo "skipping auto start for $(echo ${1} | cut -d, -f1) because valueof(auto_start) = \"${auto_start}\"."
                 fi
         else
                 echo "skipping auto start for $(echo ${1} | cut -d, -f1) because valueof(environment) = \"$environment\" is not equal to valueof(st_env) = \"${st_env}\"."
